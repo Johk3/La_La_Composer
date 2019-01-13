@@ -1,12 +1,19 @@
 import midi
-from music21 import converter,instrument # or import *
+from music21 import converter,instrument, duration, chord, stream # or import *
 s = converter.parse('midis/La_La_Land_Epilogue_Advanced.mid')
 
-print s
 for el in s.recurse():
-    print el
-    if 'Instrument' in el.classes: # or 'Piano'
-        print el.classes
+    dur = el.duration.quarterLength
+    if dur > 5:
+        print "before", dur
+        el.duration.quarterLength = 1
+        print "after", el.duration.quarterLength
+    if dur < 0.5:
+        print "before small", dur
+        el.duration.quarterLength = 0.5
+        print "after small", el.duration.quarterLength
+    # if 'Instrument' in el.classes: # or 'Piano'
+    #     pass
 
 s.write('midi', 'example.mid')
 exit(0)
