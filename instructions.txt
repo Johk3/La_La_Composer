@@ -1,0 +1,41 @@
+Go to line 874 of the trader.py
+If you dont know where that is just find a text block like this in the code and just type the rules after this block of comments:
+"
+                # This is where you can add your own rules
+                # if you uncomment the line of code that is below this text you can make some rules for the bot
+                # So the first line where it says potion_results["attack"], it means that if you have attack in your
+                # Inventory do this:
+                # Then it does a transaction, I will tell you what all the arguments do in the transaction(arguments)
+                # The first argument is potion_results, you dont need to know what that does, it just needs to be there
+                # The next argument is cnt which is also another thing that needs to be there
+                # The next is "defense" which means that if the other people has defense in their inventory
+                # The next is 1 which means how many defenses are being traded
+                # So if 1 defense is being traded by the other party then do this
+                # The next is "attack" which is what your character will choose to trade
+                # The next is 1, so the bot trades 1 attack for 1 defense
+"
+After you have found that you can now create your own rules.
+Heres an example of adding a rule where the bot sells 1 life for 2 def:
+cnt["def"] in the if statement makes sure that the person trading you has selected def
+
+A rule that you need to know. When you place this rule make sure that it is in line with all the other code
+else it will give errors.
+
+if not outputcheck and cnt["defense"]:
+    print("ITS THIS15")
+    # len(potion_results["life"]) >= 1 is saying that if you have 1 or more life in your inventory do this
+    if len(potion_results["life"]) >= 1:
+        # dont worry about the (potion_resulst, cnt) part
+        # "life" is there because it is that item that you want to sell
+        # After that comes 1 which means you sell only 1 of it (life)
+        # Then comes defense because thats what you want to buy
+        # Then comes 2 that is how much of it you want. So you want 2 defenses
+
+        output = transaction(potion_results, cnt, "life", 1, "defense", 2)
+    # You dont need to care about what happens in these if statements
+    if output:
+        print("Successful Transaction")
+        outputcheck = True
+
+    if outputcheck:
+        extracheck = False
