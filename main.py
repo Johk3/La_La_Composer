@@ -18,7 +18,10 @@ start = time.clock()
 # Import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
-
+train_128 = []
+print("------------------ WAll\n\n\n\n\n")
+# print(len(mnist.train.next_batch(128)))
+# exit(0)
 
 allnotesl = []
 notes = []
@@ -29,44 +32,80 @@ for (dirpath, dirnames, filenames) in walk("midis"):
     break
 
 for midi in midis:
-    s = converter.parse('midis/{}'.format(midi))
-    print("Preparing {}".format(midi))
+    if midi == "Someone_in_the_Crowd.mid":
+        s = converter.parse('midis/{}'.format(midi))
+        print("Preparing {}".format(midi))
 
-    i = 0
-    for el in s.recurse():
-        dur = el.duration.quarterLength
-        note = str(el).split(" ")[-1]
-        note = note.replace(">", "")
+        i = 0
+        for el in s.recurse():
+            dur = el.duration.quarterLength
+            note = str(el).split(" ")[-1]
+            note = note.replace(">", "")
 
-        if dur > 10:
-            el.duration.quarterLength = 5
+            if dur > 10:
+                el.duration.quarterLength = 5
 
-        if dur <= 0.5:
-            el.duration.quarterLength = 0.5
+            if dur <= 0.5:
+                el.duration.quarterLength = 0.5
 
-        if 'Instrument' in el.classes: # or 'Piano'
-            el.activeSite.replace(el, instrument.Harp())
+            if 'Instrument' in el.classes: # or 'Piano'
+                el.activeSite.replace(el, instrument.Harp())
 
-        notelength = [note, el.duration.quarterLength]
-        allnotesl.append(notelength)
+            notelength = [note, el.duration.quarterLength]
+            allnotesl.append(notelength)
 
-    # s.write('midi', 'example.mid')
+        # s.write('midi', 'example.mid')
 
 
-    for notel in allnotesl:
-        if isinstance(notel[0], str):
-            notes.append(str(notel))
+        for notel in allnotesl:
+            if isinstance(notel[0], str):
+                notes.append(str(notel[0]))
 
-    t = Tokenizer()
-    # fit the tokenizer on the documents
-    oof = t.fit_on_texts(notes)
+t = Tokenizer(lower=False, filters="")
+# fit the tokenizer on the documents
+oof = t.fit_on_texts(notes)
 
 
 # summarize what was learned
-print("Length, ", t.document_count)
+print("Keras Length, ", t.document_count)
 print("Allnotes length: ", len(allnotesl))
-# print(t.word_index)
-print(t.index_word)
+out = ""
+i = 0
+# for note in allnotesl:
+#     if i % 10 == 0:
+#         out += "\n\n{}. {}".format(i, note[0])
+#     else:
+#         out += "  {}. {}".format(i, note[0])
+#     i+=1
+# print(out)
+#
+# with open("ados.txt", "w") as file:
+#     file.writelines(out)
+
+#print(t.word_index)
+#print(t.index_word)
+
+found_notes = 0
+bit128_collection = []
+for notel in allnotesl:
+    for key, item in t.index_word.items():
+        if item == notel[0]:
+            bit128_collection.append(key)
+            found_notes += 1
+    if found_notes % 128 == 0:
+        train_128.append(bit128_collection)
+        bit128_collection = []
+if bit128_collection:
+    train_128.append(bit128_collection)
+
+print("successfully gathered training data...\nFound {}/{} notes".format(found_notes, len(allnotesl)))
+for i in range(len(train_128)):
+    print("{}.Array length is {}".format(i, len(train_128[i])))
+
+exit(0)
+
+# MACHINE LEARNING PART -------------------
+
 
 num_steps = 1000
 batch_size = 128
