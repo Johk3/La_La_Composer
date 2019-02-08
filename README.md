@@ -1,6 +1,6 @@
 # La_La_Composer 
 
-![](https://img.shields.io/badge/license-MIT-lightgray.svg) ![](https://img.shields.io/badge/version-0.1.2-yellow.svg) ![](https://img.shields.io/badge/build-passing-green.svg)
+![](https://img.shields.io/badge/license-MIT-lightgray.svg) ![](https://img.shields.io/badge/version-0.1.5-yellow.svg) ![](https://img.shields.io/badge/build-passing-green.svg)
 
 > A Machine Learning composer. 
 
@@ -25,12 +25,12 @@ These are the sections on the [README.md](https://github.com/Deltasiv/Darwin/blo
 
 ## Description 
 
-La_La_Composer is a Machine Learning composer trained with large midi datasets to create its own music. GAN technology is
-used to make this possible.
+La_La_Composer is a Machine Learning composer trained with large midi datasets to create its own kind of music. GAN technology is
+used to make this possible. The music that comes out of the program will be heavily inspired by the midi data that the program has been given.
 
 #### Technologies 
 
-- Python 2.7
+- Python 3.6
 
 #### Other technologies are subject to be used 
 
