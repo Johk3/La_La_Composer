@@ -101,7 +101,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Version Info 
 
-The current stable version of La_La_Composer is: 0.1.2  
+The current stable version of La_La_Composer is: 0.1.5
+
+This version is unstable and not working yet.
+
+The program will be stable by the version 1.0.0
 
 --- 
 
@@ -124,7 +128,7 @@ Emails are located in [Help](#help) ortherwise use Twitter or Discord.
 
 --- 
 
-#### Thank you for giving Darwin a look :) 
+#### Thank you for giving La_La_Composer a look :) 
 
 ---
 
