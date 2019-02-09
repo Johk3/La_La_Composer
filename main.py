@@ -13,14 +13,16 @@ import datetime
 from random import randint
 import os
 import time
+from keras import backend as K
 
 start = time.clock()
 # Import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+sec_train = mnist.train.next_batch(128)[1][0]
 train_128 = []
-print("------------------ WAll\n\n\n\n\n")
-# print(len(mnist.train.next_batch(128)))
+print("------------------ Initializing\n\n\n\n\n")
+# print(mnist.train.next_batch(128)[1][0])
 # exit(0)
 
 allnotesl = []
@@ -45,8 +47,8 @@ for midi in midis:
             if dur > 10:
                 el.duration.quarterLength = 5
 
-            if dur <= 0.5:
-                el.duration.quarterLength = 0.5
+            if dur <= 0.1:
+                el.duration.quarterLength = 0.1
 
             if 'Instrument' in el.classes: # or 'Piano'
                 el.activeSite.replace(el, instrument.Harp())
@@ -90,22 +92,24 @@ bit128_collection = []
 for notel in allnotesl:
     for key, item in t.index_word.items():
         if item == notel[0]:
-            bit128_collection.append(key)
+            bit128_collection.append([key, notel[1]])
             found_notes += 1
     if found_notes % 128 == 0:
         train_128.append(bit128_collection)
         bit128_collection = []
-if bit128_collection:
-    train_128.append(bit128_collection)
+# if bit128_collection:
+#     train_128.append(bit128_collection)
 
 print("successfully gathered training data...\nFound {}/{} notes".format(found_notes, len(allnotesl)))
 for i in range(len(train_128)):
     print("{}.Array length is {}".format(i, len(train_128[i])))
 
-exit(0)
+train_128 = np.array(train_128)
+# k_128 is converted to be used as a machine learning variable
+k_128 = K.variable(value=train_128, dtype='float64', name='k_128')
 
 # MACHINE LEARNING PART -------------------
-
+print("---------- Machine Learning\n\n\n\n\n")
 
 num_steps = 1000
 batch_size = 128
@@ -202,8 +206,8 @@ now = datetime.datetime.now()
 
 mod_dir = now.strftime("%Y-%m-%d--%H:%M")
 img_dir = now.strftime("%Y-%m-%d--%H:%M")
-os.mkdir("trained/{}".format(img_dir))
-os.mkdir("model/{}".format(mod_dir))
+# os.mkdir("trained/{}".format(img_dir))
+# os.mkdir("model/{}".format(mod_dir))
 
 # Start training
 with tf.Session() as sess:
@@ -212,8 +216,11 @@ with tf.Session() as sess:
 
     for i in range(1, num_steps + 1):
         # Prepare Data
-        # Get the next batch of MNIST data (only images are needed, not labels)
-        batch_x, _ = mnist.train.next_batch(batch_size)
+        # Get the next batch of midi data (only notes are needed, not labels)
+        print(k_128.eval())
+        exit(0)
+
+        batch_x, _ = k_128.eval()
         # Generate noise to feed to the generator
         z = np.random.uniform(-1., 1., size=[batch_size, noise_dim])
 
@@ -234,11 +241,12 @@ with tf.Session() as sess:
         g = -1 * (g - 1)
         for j in range(4):
             # Generate image from noise. Extend to 3 channels for matplot figure.
-            img = np.reshape(np.repeat(g[j][:, :, np.newaxis], 3, axis=2),
-                             newshape=(28, 28, 3))
-            saveimg = Image.fromarray(img, mode='RGB')
-            saveimg.save("trained/{}/number{}.png".format(img_dir, randint(0, 1000000)))
-
-    save_path = saver.save(sess, "model/{}/gan.ckpt".format(mod_dir))
+            print("DONE {}".format(j))
+    #         img = np.reshape(np.repeat(g[j][:, :, np.newaxis], 3, axis=2),
+    #                          newshape=(28, 28, 3))
+    #         saveimg = Image.fromarray(img, mode='RGB')
+    #         saveimg.save("trained/{}/number{}.png".format(img_dir, randint(0, 1000000)))
+    #
+    # save_path = saver.save(sess, "model/{}/gan.ckpt".format(mod_dir))
 end = time.clock()
 print("Done in -- {0:.2f} seconds".format(end - start))
