@@ -14,12 +14,13 @@ from random import randint
 import os
 import time
 from keras import backend as K
+from random import choice
 
 start = time.clock()
 # Import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
-sec_train = mnist.train.next_batch(128)[1][0]
+sec_train = []
 train_128 = []
 print("------------------ Initializing\n\n\n\n\n")
 # print(mnist.train.next_batch(128)[1][0])
@@ -89,13 +90,17 @@ i = 0
 
 found_notes = 0
 bit128_collection = []
+bit128_sectrain = []
 for notel in allnotesl:
     for key, item in t.index_word.items():
         if item == notel[0]:
-            bit128_collection.append([key, notel[1]])
+            bit128_collection.append(key)
+            bit128_sectrain.append(choice([0, 1]))
             found_notes += 1
     if found_notes % 128 == 0:
         train_128.append(bit128_collection)
+        sec_train.append(bit128_sectrain)
+        bit128_sectrain = []
         bit128_collection = []
 # if bit128_collection:
 #     train_128.append(bit128_collection)
@@ -104,10 +109,9 @@ print("successfully gathered training data...\nFound {}/{} notes".format(found_n
 for i in range(len(train_128)):
     print("{}.Array length is {}".format(i, len(train_128[i])))
 
-train_128 = np.array(train_128)
+train_128 = np.array([train_128, sec_train])
 # k_128 is converted to be used as a machine learning variable
 k_128 = K.variable(value=train_128, dtype='float64', name='k_128')
-
 # MACHINE LEARNING PART -------------------
 print("---------- Machine Learning\n\n\n\n\n")
 
@@ -116,7 +120,7 @@ batch_size = 128
 learning_rate = 0.0002
 
 # Network Params
-image_dim = 784  # 28*28 pixels
+image_dim = 128  # 28*28 pixels
 gen_hidden_dim = 256
 disc_hidden_dim = 256
 noise_dim = 100  # Noise data points
@@ -217,8 +221,10 @@ with tf.Session() as sess:
     for i in range(1, num_steps + 1):
         # Prepare Data
         # Get the next batch of midi data (only notes are needed, not labels)
-        print(k_128.eval())
-        exit(0)
+        # print(k_128.eval())
+        # print("----------------\n\n")
+        # print(mnist.train.next_batch(128))
+        #exit(0)
 
         batch_x, _ = k_128.eval()
         # Generate noise to feed to the generator
