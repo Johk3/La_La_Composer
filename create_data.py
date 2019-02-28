@@ -77,28 +77,38 @@ class Main:
     def make_data(self, t):
         w, h = 128, 128
         data = np.zeros((h, w, 3), dtype=np.uint8)
+        i = 0
+        frame_number = 1
         truers = False
-        for x in range(w):
-            for note in self.notes:
-                    # if truers:
-                    #     truers = False
-                    #     break
-                    key = None
-                    for y in range(h):
-                        if not key:
-                            for number, notekey in t.index_word.items():
-                                if note[0] == notekey:
-                                    key = number
-                                    print("Found notekey " + notekey)
-
-                        if y == key:
-                            data[key, x] = [255, 255, 255]
-                            truers = True
+        for note in self.notes:
+            for x in range(w):
+                        key = None
+                        if truers:
+                            truers = False
                             break
+                        if x == i:
+                            if i % 127 == 0 and i != 0:
+                                img = Image.fromarray(data, "RGB")
+                                img.save("train/frame{}.png".format(frame_number))
+                                #img.show()
+                                frame_number += 1
+                                data = np.zeros((h, w, 3), dtype=np.uint8)
+                                i = 0
+                                break
+                            for y in range(h):
+                                if not key:
+                                    for number, notekey in t.index_word.items():
+                                        if note[0] == notekey:
+                                            key = number
+                                            print("Found notekey " + notekey)
 
-        img = Image.fromarray(data, "RGB")
-        img.save("train/frame.png")
-        img.show()
+                                if y == key:
+                                    data[key, x] = [255, 255, 255]
+                                    print("Created ({},{})".format(key, x))
+                                    truers = True
+                                    i += 1
+                                    break
+
 
 
 if __name__ == "__main__":
