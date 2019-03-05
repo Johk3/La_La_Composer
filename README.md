@@ -1,8 +1,10 @@
 # La_La_Composer 
 
-![](https://img.shields.io/badge/license-MIT-lightgray.svg) ![](https://img.shields.io/badge/version-0.1.5-yellow.svg) ![](https://img.shields.io/badge/build-passing-green.svg)
+![](https://img.shields.io/badge/license-MIT-lightgray.svg) ![](https://img.shields.io/badge/version-1.1.5-yellow.svg) ![](https://img.shields.io/badge/build-passing-green.svg)
 
 > A Machine Learning composer. 
+
+![Midi Image Output]("example.png")
 
 ---
 
@@ -28,13 +30,12 @@ These are the sections on the [README.md](https://github.com/Deltasiv/Darwin/blo
 La_La_Composer is a Machine Learning composer trained with large midi datasets to create its own kind of music. GAN technology is
 used to make this possible. The music that comes out of the program will be heavily inspired by the midi data that the program has been given.
 
+The GAN model is being trained on images that have been made out of midi's. In turn the GAN model will make images similar to the images given by the user.
+The next plan is to be able to decrypt the images that the GAN will output and turn them into music.
+
 #### Technologies 
 
 - Python 3.6
-
-#### Other technologies are subject to be used 
-
-Angular
 
 ## How To Use 
 
@@ -51,6 +52,11 @@ You must have node installed with the right versions specified in the technologi
 
 Download all packages with
 ```
+pip install tensorflow
+pip install keras
+pip install pillow
+pip install numpy
+pip install matplotlib
 pip install music21
 pip install python-midi
 pip install mido
@@ -101,11 +107,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Version Info 
 
-The current stable version of La_La_Composer is: 0.1.5
+The current stable version of La_La_Composer is: 1.1.5
 
-This version is unstable and not working yet.
-
-The program will be stable by the version 1.0.0
+* Added ability to create image data from midis
+* Integrated image data to the GAN
 
 --- 
 
