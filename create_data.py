@@ -35,7 +35,7 @@ class Main:
             break
 
         for midi in midis:
-            if midi == "Someone_in_the_Crowd.mid":
+            if midi:
                 s = converter.parse('midis/{}'.format(midi))
                 print("Preparing {}".format(midi))
 
