@@ -4,7 +4,7 @@
 
 > A Machine Learning composer. 
 
-![Midi Image Output]("example.png")
+![Midi Image Output](example.png) ![Midi Image Output](example2.png)
 
 ---
 
