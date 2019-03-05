@@ -4,7 +4,7 @@
 
 > A Machine Learning composer. 
 
-![alt text]("example.png")
+![]("/images/example.png")
 
 ---
 
