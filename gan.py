@@ -38,7 +38,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("/home/johk/PycharmProjects/La_La_Composer/train/", one_hot=True)
 
 # Training Params
-num_steps = 10000
+num_steps = 50000
 batch_size = 128
 learning_rate = 0.0002
 
