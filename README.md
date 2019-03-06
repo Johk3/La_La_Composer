@@ -33,6 +33,10 @@ used to make this possible. The music that comes out of the program will be heav
 The GAN model is being trained on images that have been made out of midi's. In turn the GAN model will make images similar to the images given by the user.
 The next plan is to be able to decrypt the images that the GAN will output and turn them into music.
 
+This is a very ambiguous project and I definitely do appreciate any outsiders
+wanting to help on this project. If you make large contributions to this
+project I will definitely notice it and put you as one of the official contributors.
+
 #### Technologies 
 
 - Python 3.6
@@ -46,7 +50,7 @@ python main.py
 
 #### Prerequistites 
 
-You must have node installed with the right versions specified in the technologies part.
+You must have python 3.6 installed with all of the packages listed below.
 
 #### Installation 
 
@@ -67,7 +71,7 @@ pip install python-rtmidi
 
 ## References 
 
-[Back To The Top](#Darwin) 
+[Back To The Top](#La_La_Composer) 
 
 --- 
 
