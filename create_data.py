@@ -90,7 +90,7 @@ class Main:
                             if i % 127 == 0 and i != 0:
                                 img = Image.fromarray(data, "RGB")
                                 img.save("train/frame{}.png".format(frame_number))
-                                #img.show()
+                                # img.show()
                                 frame_number += 1
                                 data = np.zeros((h, w, 3), dtype=np.uint8)
                                 i = 0
