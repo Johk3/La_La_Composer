@@ -164,7 +164,7 @@ with tf.Session() as sess:
         for j in range(4):
             # Generate image from noise. Extend to 3 channels for matplot figure.
             img = np.reshape(np.repeat(g[j][:, :, np.newaxis], 3, axis=2),
-                             newshape=(128, 128, 3))
+                             newshape=(28, 28, 3))
             saveimg = Image.fromarray(img, mode='RGB')
             saveimg.save("images/{}/number{}.png".format(img_dir, randint(0,1000000)))
 
