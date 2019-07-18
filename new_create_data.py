@@ -7,17 +7,8 @@ from keras.preprocessing.text import one_hot
 from keras.preprocessing.text import Tokenizer
 from os import walk
 
-import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
-from PIL import Image
-import datetime
-from random import randint
 import os
-import time
-from keras import backend as K
-from random import choice
-
 
 class Main:
 
@@ -28,6 +19,7 @@ class Main:
     def get_notes(self):
         allnotesl = []
         notes = []
+        notelstr = []
 
         midis = []
         for (dirpath, dirnames, filenames) in walk("midis"):
@@ -60,6 +52,7 @@ class Main:
                 # s.write('midi', 'example.mid')
 
                 for notel in allnotesl:
+                    notelstr.append(str(notel[1]))
                     if isinstance(notel[0], str):
                         notes.append(str(notel[0]))
 
@@ -67,59 +60,24 @@ class Main:
         # fit the tokenizer on the documents
         oof = t.fit_on_texts(notes)
 
+        lenstr = Tokenizer(lower=False, filters="")
+        lenstr.fit_on_texts(notelstr)
         # summarize what was learned
         print("Keras Length, ", t.document_count)
         print("Allnotes length: ", len(allnotesl))
         self.notes = allnotesl
-        return t
+        return t, lenstr
 
-
-    def make_data(self, t):
+    def make_data(self, note_data, len_data):
         os.system("rm train/*.png")
+        print(note_data.index_word.items())
         w, h = 128, 128
-        data = np.zeros((h, w, 3), dtype=np.uint8)
-        i = 0
-        frame_number = 1
-        truers = False
-        for note in self.notes:
-            for x in range(w):
-                        key = None
-                        if truers:
-                            truers = False
-                            break
-                        if x == i:
-                            if i % 127 == 0 and i != 0:
-                                img = Image.fromarray(data, "RGB")
-                                img.save("train/frame{}.png".format(frame_number))
-                                #img.show()
-                                frame_number += 1
-                                data = np.zeros((h, w, 3), dtype=np.uint8)
-                                i = 0
-                                break
-                        for y in range(h):
-                            if not key:
-                                for number, notekey in t.index_word.items():
-                                    if note[0] == notekey:
-                                        key = number
-                                        print("Found notekey " + notekey)
-
-                            if y == key:
-                                data[key, x] = [255, 255, 255]
-                                print("Created ({},{})".format(key, x))
-                                truers = True
-                                i += 1
-                                break
-
+        img = Image.new("RGB", (w, h))
+        print(img[0])
+        img.save("train/frame.png")
 
 
 if __name__ == "__main__":
     engine = Main()
-    note_data = engine.get_notes()
-    engine.make_data(note_data)
-
-
-
-
-
-
-
+    note_data, len_data = engine.get_notes()
+    engine.make_data(note_data, len_data)
