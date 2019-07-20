@@ -53,8 +53,7 @@ class Main:
 
                 for notel in allnotesl:
                     notelstr.append(str(notel[1]))
-                    if isinstance(notel[0], str):
-                        notes.append(str(notel[0]))
+                    notes.append(str(notel[0]))
 
         t = Tokenizer(lower=False, filters="")
         # fit the tokenizer on the documents
@@ -70,11 +69,34 @@ class Main:
 
     def make_data(self, note_data, len_data):
         os.system("rm train/*.png")
-        print(note_data.index_word.items())
+        notes = {}
+        length = {}
+        for key, value in note_data.index_word.items():
+            notes[value] = key
+
+        for key, value in len_data.index_word.items():
+            length[value] = key
+
         w, h = 128, 128
         img = Image.new("RGB", (w, h))
-        print(img[0])
-        img.save("train/frame.png")
+        pixels = img.load()
+
+        i = 0
+        n = 0
+        for note in self.notes:
+            for x in range(img.size[0]):  # for every pixel:
+                if notes[note[0]] == x:
+                    for y in range(img.size[1]):
+                        if length[str(note[1])] == y:
+                            pixels[x,y] = (255, 255, 255)
+                            break
+
+            if i % 128 == 0:
+                n += 1
+                img.save("train/frame{}.png".format(n))
+                img = Image.new("RGB", (w, h))
+                pixels = img.load()
+            i += 1
 
 
 if __name__ == "__main__":
