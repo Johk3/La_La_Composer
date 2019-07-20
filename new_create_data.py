@@ -116,6 +116,10 @@ class Main:
                         midis[notes[x]] = length[y]
         print(midis)
         print("Done decoding...")
+        return midis
+
+    def buildMidis(self):
+        # Build midis here
 
 
 
