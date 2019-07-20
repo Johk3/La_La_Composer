@@ -6,6 +6,7 @@ from keras.preprocessing.text import text_to_word_sequence
 from keras.preprocessing.text import one_hot
 from keras.preprocessing.text import Tokenizer
 from os import walk
+from glob import glob
 
 import numpy as np
 import os
@@ -89,7 +90,6 @@ class Main:
                     for y in range(img.size[1]):
                         if length[str(note[1])] == y:
                             pixels[x,y] = (255, 255, 255)
-                            break
 
             if i % 128 == 0:
                 n += 1
@@ -98,8 +98,29 @@ class Main:
                 pixels = img.load()
             i += 1
 
+        return notes, length
+
+    def decode(self, notes, length):
+        files = glob("train/*.png")
+        midis = {}
+        notes = dict((v, k) for k, v in notes.items())
+        length = dict((v, k) for k, v in length.items())
+
+        for file in files:
+            img = Image.open(file)
+            pixels = img.load()
+
+            for x in range(img.size[0]):  # for every pixel:
+                for y in range(img.size[1]):
+                    if pixels[x,y] == (255, 255, 255):
+                        midis[notes[x]] = length[y]
+        print(midis)
+        print("Done decoding...")
+
+
 
 if __name__ == "__main__":
     engine = Main()
     note_data, len_data = engine.get_notes()
-    engine.make_data(note_data, len_data)
+    notes, length = engine.make_data(note_data, len_data)
+    engine.decode(notes, length)
