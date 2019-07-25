@@ -1,7 +1,7 @@
 from __future__ import division, print_function, absolute_import
 from PIL import Image
 import numpy as np
-from music21 import converter,instrument, duration, chord, stream # or import *
+from music21 import converter,instrument, duration, chord, stream, midi, note # or import *
 from keras.preprocessing.text import text_to_word_sequence
 from keras.preprocessing.text import one_hot
 from keras.preprocessing.text import Tokenizer
@@ -120,10 +120,20 @@ class Main:
 
     def buildMidis(self):
         # Build midis here
+        pass
 
 
 
 if __name__ == "__main__":
+    s = stream.Stream()
+    n = note.Note('g#')
+    n.quarterLength = .5
+    s.repeatAppend(n, 4)
+    mf = midi.translate.streamToMidiFile(s)
+    mf.open('outmidis/midi.mid', 'wb')
+    mf.write()
+    mf.close()
+    exit(0)
     engine = Main()
     note_data, len_data = engine.get_notes()
     notes, length = engine.make_data(note_data, len_data)
