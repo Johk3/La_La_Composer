@@ -123,31 +123,14 @@ class Main:
         with open("lala.txt", "w+") as file:
             for n, length in midis.items():
                 file.write("{} {}\n".format(n, length))
-        #     check = True
-        #     s = stream.Stream()
-        #     n = ElementWrapper(n)
-        #     try:
-        #         length = float(length)
-        #     except Exception:
-        #         length = 1.0
-        #     print(n, length)
-        #     # if "/" in length:
-        #     #     length = float(length)
-        #     try:
-        #         n = note.Note(n)
-        #     except Exception as e:
-        #         check = False
-        #     try:
-        #         n.quarterLength = length
-        #     except Exception as e:
-        #         check = False
-        #     if check != False:
-        #         s.append(n)
-        #
-        # mf = midi.translate.streamToMidiFile(s)
-        # mf.open('outmidis/midi.mid', 'wb')
-        # mf.write()
-        # mf.close()
+            s = stream.Stream()
+            # This whole component needs to be redo'd since this clearly wont work, the data needs to be somehow
+            # rapped around the music21 components for this to work
+
+        mf = midi.translate.streamToMidiFile(s)
+        mf.open('outmidis/midi.mid', 'wb')
+        mf.write()
+        mf.close()
         print("Done!")
 
 
